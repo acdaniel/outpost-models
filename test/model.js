@@ -16,7 +16,7 @@ describe('Model', function () {
     });
 
     describe('#constructor', function () {
-      
+
       var newModel;
 
       before(function () {
@@ -41,7 +41,7 @@ describe('Model', function () {
   });
 
   describe('.markAsModified(), .isModified()', function () {
-    
+
     var model;
 
     before(function () {
@@ -50,7 +50,7 @@ describe('Model', function () {
         obj: { prop1: 'foo', prop2: 'bar' }
       });
     });
-    
+
     it('should except a string path', function () {
       model.markAsModified('str');
       model.markAsModified('obj.deep.blah');
@@ -64,7 +64,7 @@ describe('Model', function () {
     it('should except an array path', function () {
       model.markAsModified(['str']);
       model.markAsModified(['obj', 'deep', 'blah']);
-      
+
       expect(model.isModified(['str'])).to.be.true();
       expect(model.isModified(['obj'])).to.true();
       expect(model.isModified(['obj', 'deep'])).to.true();
@@ -74,7 +74,7 @@ describe('Model', function () {
   });
 
   describe('.before()', function () {
-    
+
     it('should allow code exectution before a method', function () {
       var model = new FullTestModel(db, {});
       expect(model.str).to.equal('');
@@ -143,12 +143,12 @@ describe('Model', function () {
   });
 
   describe('.save()', function () {
-    
+
     var _collection;
     var model;
 
     before(function (done) {
-      model = new FullTestModel(db, { 
+      model = new FullTestModel(db, {
         str: 'test string',
         obj: { foo: 'bar' }
       });
@@ -157,7 +157,7 @@ describe('Model', function () {
           function (collection) {
             _collection = collection;
             done();
-          }, 
+          },
           function (err) {
             return done(err);
           }
@@ -183,7 +183,7 @@ describe('Model', function () {
                 _etag: docs[0]._etag,
                 _id: docs[0]._id.toString(),
                 bool: docs[0].bool,
-                date: docs[0].date,
+                date: docs[0].date.toJSON(),
                 num: docs[0].num,
                 obj: { propv: 'undefined.undefined' },
                 str: docs[0].str,
@@ -216,7 +216,7 @@ describe('Model', function () {
                 _etag: docs[0]._etag,
                 _id: docs[0]._id.toString(),
                 bool: docs[0].bool,
-                date: docs[0].date,
+                date: docs[0].date.toJSON(),
                 num: docs[0].num,
                 obj: { propv: 'undefined.undefined' },
                 str: docs[0].str,
@@ -237,7 +237,7 @@ describe('Model', function () {
     var model;
 
     before(function (done) {
-      model = new FullTestModel(db, { 
+      model = new FullTestModel(db, {
         str: 'test string',
         obj: { foo: 'bar' }
       });
@@ -246,7 +246,7 @@ describe('Model', function () {
           function (collection) {
             _collection = collection;
             done();
-          }, 
+          },
           function (err) {
             return done(err);
           }
@@ -283,7 +283,7 @@ describe('Model', function () {
     var model;
 
     before(function (done) {
-      model = new FullTestModel(db, { 
+      model = new FullTestModel(db, {
         str: 'test string',
         obj: { foo: 'bar' }
       });
@@ -292,7 +292,7 @@ describe('Model', function () {
           function (collection) {
             _collection = collection;
             done();
-          }, 
+          },
           function (err) {
             return done(err);
           }
@@ -323,7 +323,7 @@ describe('Model', function () {
     var model;
 
     before(function (done) {
-      model = new FullTestModel(db, { 
+      model = new FullTestModel(db, {
         str: 'test string',
         obj: { foo: 'bar' }
       });
@@ -332,7 +332,7 @@ describe('Model', function () {
           function (collection) {
             _collection = collection;
             done();
-          }, 
+          },
           function (err) {
             return done(err);
           }
@@ -363,7 +363,7 @@ describe('Model', function () {
     var model;
 
     before(function (done) {
-      model = new FullTestModel(db, { 
+      model = new FullTestModel(db, {
         str: 'test string',
         obj: { foo: 'bar' }
       });
@@ -372,7 +372,7 @@ describe('Model', function () {
           function (collection) {
             _collection = collection;
             done();
-          }, 
+          },
           function (err) {
             return done(err);
           }
@@ -397,7 +397,7 @@ describe('Model', function () {
           done();
         })
         .done(null, done);
-    });  
+    });
   });
 
 });
