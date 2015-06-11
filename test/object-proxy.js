@@ -127,7 +127,7 @@ describe('ObjectProxy', function () {
 
       expect(obj.str).to.equal('str');
       expect(obj.any).to.equal('blah');
-      expect(obj.bool).to.be.false();
+      expect(obj.bool).to.be.false;
       expect(obj.num).to.equal(10);
     });
 
@@ -159,7 +159,7 @@ describe('ObjectProxy', function () {
         expect(event.currentPath).to.equal('str');
         expect(event.path).to.equal('str');
         expect(event.newValue).to.equal('str');
-        expect(event.oldValue).to.not.exist();
+        expect(event.oldValue).to.not.exist;
         done();
       });
       obj.set('str', 'str');
@@ -195,7 +195,7 @@ describe('ObjectProxy', function () {
         expect(event.currentPath).to.equal('obj');
         expect(event.path).to.equal('obj.foo');
         expect(event.newValue).to.equal('foo');
-        expect(event.oldValue).to.not.exist();
+        expect(event.oldValue).to.not.exist;
         done();
       });
       obj.set('obj.foo', 'foo');
@@ -204,7 +204,7 @@ describe('ObjectProxy', function () {
     it('should not trigger change event if silent option given', function (done) {
       var obj = new MyObjectProxy();
       obj.on('change', function (event) {
-        expect(false).to.be.true();
+        expect(false).to.be.true;
         done();
       });
       obj.set('str', 'str', { silent: true });
@@ -229,7 +229,7 @@ describe('ObjectProxy', function () {
         str: 'test string',
         obj: { foo: 'foo' }
       });
-      expect(obj.get('blahblahblah')).to.not.exist();
+      expect(obj.get('blahblahblah')).to.not.exist;
     });
 
     it('should except a string path', function () {
@@ -265,8 +265,8 @@ describe('ObjectProxy', function () {
         str: 'test string',
         obj: { foo: 'foo' }
       });
-      expect(obj.has('str')).to.be.true();
-      expect(obj.has('obj.foo')).to.be.true();
+      expect(obj.has('str')).to.be.true;
+      expect(obj.has('obj.foo')).to.be.true;
     });
 
     it('should except an array path', function () {
@@ -274,8 +274,8 @@ describe('ObjectProxy', function () {
         str: 'test string',
         obj: { foo: 'foo' }
       });
-      expect(obj.has(['str'])).to.be.true();
-      expect(obj.has(['obj', 'foo'])).to.be.true();
+      expect(obj.has(['str'])).to.be.true;
+      expect(obj.has(['obj', 'foo'])).to.be.true;
     });
   });
 

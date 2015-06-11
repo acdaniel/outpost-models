@@ -26,14 +26,7 @@ describe('Model', function () {
       });
 
       it('should have run initialized', function () {
-        expect(newModel.bool).to.be.true();
-      });
-
-      it('should default property values', function () {
-        expect(newModel._id).to.not.exist();
-        expect(newModel._etag).to.not.exist();
-        expect(newModel.date).to.equalDate(new Date());
-        expect(newModel.num).to.equal(0);
+        expect(newModel.bool).to.be.true;
       });
 
     });
@@ -55,20 +48,20 @@ describe('Model', function () {
       model.markAsModified('str');
       model.markAsModified('obj.deep.blah');
 
-      expect(model.isModified('str')).to.be.true();
-      expect(model.isModified('obj')).to.true();
-      expect(model.isModified('obj.deep')).to.true();
-      expect(model.isModified('obj.deep.blah')).to.true();
+      expect(model.isModified('str')).to.be.true;
+      expect(model.isModified('obj')).to.true;
+      expect(model.isModified('obj.deep')).to.true;
+      expect(model.isModified('obj.deep.blah')).to.true;
     });
 
     it('should except an array path', function () {
       model.markAsModified(['str']);
       model.markAsModified(['obj', 'deep', 'blah']);
 
-      expect(model.isModified(['str'])).to.be.true();
-      expect(model.isModified(['obj'])).to.true();
-      expect(model.isModified(['obj', 'deep'])).to.true();
-      expect(model.isModified(['obj', 'deep', 'blah'])).to.true();
+      expect(model.isModified(['str'])).to.be.true;
+      expect(model.isModified(['obj'])).to.true;
+      expect(model.isModified(['obj', 'deep'])).to.true;
+      expect(model.isModified(['obj', 'deep', 'blah'])).to.true;
     });
 
   });
@@ -76,7 +69,7 @@ describe('Model', function () {
   describe('.before()', function () {
 
     it('should allow code exectution before a method', function () {
-      var model = new FullTestModel(db, {});
+      var model = new FullTestModel(db, { str: '' });
       expect(model.str).to.equal('');
       model.fooString();
       expect(model.str).to.equal('(foo)');
@@ -95,7 +88,7 @@ describe('Model', function () {
   describe('.after()', function () {
 
     it('should allow code exectution after a method', function () {
-      var model = new FullTestModel(db, {});
+      var model = new FullTestModel(db, { str: '' });
       expect(model.str).to.equal('');
       model.fooString();
       expect(model.str).to.equal('(foo)');
@@ -118,10 +111,10 @@ describe('Model', function () {
       model.validate()
         .then(
           function () {
-            expect(false).to.be.true();
+            expect(false).to.be.true;
           },
           function (err) {
-            expect(err).to.exist();
+            expect(err).to.exist;
             done();
           })
         .done(null, done);
@@ -131,11 +124,11 @@ describe('Model', function () {
       var model = new FullTestModel(db, { str: 'bar' });
       model.validate()
         .then(function () {
-          expect(true).to.be.true();
+          expect(true).to.be.true;
           done();
         })
         .catch(function (err) {
-          expect(err).to.not.exist();
+          expect(err).to.not.exist;
         })
         .done(null, done);
     });
@@ -171,9 +164,9 @@ describe('Model', function () {
     it('should insert a new document', function (done) {
       model.save()
         .then(function () {
-          expect(model._id).to.exist();
-          expect(model._etag).to.exist();
-          expect(model.isModified()).to.be.false();
+          expect(model._id).to.exist;
+          expect(model._etag).to.exist;
+          expect(model.isModified()).to.be.false;
           _collection.count({}, function (err, count) {
             if (err) { return done(err); }
             expect(count).to.equal(1);
@@ -201,12 +194,12 @@ describe('Model', function () {
       model.str = 'test update';
       var _id = model._id.toString();
       var _etag = model._etag;
-      expect(model.isModified()).to.be.true();
+      expect(model.isModified()).to.be.true;
       model.save()
         .then(function () {
           expect(model._id.toString()).to.equal(_id);
           expect(model._etag).to.not.equal(_etag);
-          expect(model.isModified()).to.be.false();
+          expect(model.isModified()).to.be.false;
           _collection.count({}, function (err, count) {
             if (err) { return done(err); }
             expect(count).to.equal(1);
@@ -260,13 +253,13 @@ describe('Model', function () {
     it('should remove the document', function (done) {
       model.save()
         .then(function () {
-          expect(model._id).to.exist();
+          expect(model._id).to.exist;
           return model.remove();
         })
         .then(function () {
-          expect(model._id).to.not.exist();
-          expect(model._etag).to.not.exist();
-          expect(model.isModified()).to.be.false();
+          expect(model._id).to.not.exist;
+          expect(model._etag).to.not.exist;
+          expect(model.isModified()).to.be.false;
           _collection.count({}, function (err, count) {
             if (err) { return done(err); }
             expect(count).to.equal(0);
@@ -306,7 +299,7 @@ describe('Model', function () {
     it('should return an array of objects', function (done) {
       model.save()
         .then(function () {
-          expect(model._id).to.exist();
+          expect(model._id).to.exist;
           return FullTestModel.find(db, { _id: model._id });
         })
         .then(function (arr) {
@@ -346,11 +339,11 @@ describe('Model', function () {
     it('should return an object', function (done) {
       model.save()
         .then(function () {
-          expect(model._id).to.exist();
+          expect(model._id).to.exist;
           return FullTestModel.findOne(db, { _id: model._id });
         })
         .then(function (doc) {
-          expect(doc).to.exist();
+          expect(doc).to.exist;
           expect(doc._id.toString()).to.equal(model._id.toString());
           done();
         })
@@ -386,14 +379,14 @@ describe('Model', function () {
     it('should remove a document', function (done) {
       model.save()
         .then(function () {
-          expect(model._id).to.exist();
+          expect(model._id).to.exist;
           return FullTestModel.remove(db, { _id: model._id });
         })
         .then(function () {
           return FullTestModel.findOne(db, { _id: model._id });
         })
         .then(function (doc) {
-          expect(doc).to.not.exist();
+          expect(doc).to.not.exist;
           done();
         })
         .done(null, done);

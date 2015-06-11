@@ -29,7 +29,7 @@ var FullTestModel = Model.extend({
         }
       }
     },
-    date: { type: 'date', default: Date.now },
+    date: { type: 'date', default: function () { return new Date(); } },
     arr: { type: 'array' },
     num: { type: 'number', default: 0 },
     bool: { type: 'boolean', default: false },
