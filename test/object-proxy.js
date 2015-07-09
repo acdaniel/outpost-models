@@ -186,7 +186,7 @@ describe('ObjectProxy', function () {
         expect(event.path).to.equal('date.month');
         done();
       });
-      obj.date.month = 6;
+      obj.date.month += 1;
     });
 
     it('should trigger change event on nested change', function (done) {
