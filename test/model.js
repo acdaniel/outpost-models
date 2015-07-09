@@ -7,12 +7,37 @@ var expect = chai.expect;
 describe('Model', function () {
 
   var db = require('outpost-db').connect(process.DB_URI);
+  var Model = require('../lib/model');
   var FullTestModel = require('./support/full-test-model');
 
   describe('.extend()', function () {
 
     it('should return prototype with static methods defined', function () {
-      expect(FullTestModel).to.include.keys('find', 'findOne', 'remove');
+      expect(FullTestModel).to.include.keys('extend', 'find', 'findOne', 'remove');
+    });
+
+    it('should allow subclassing of a model', function () {
+      var ModelA = Model.extend({
+        name: 'ModelA',
+        abstract: true,
+        properties: {
+          'strA': { type: 'string' }
+        }
+      });
+      var ModelB = ModelA.extend({
+        name: 'ModelB',
+        collection: 'modelb',
+        properties: {
+          'strB': { type: 'string' }
+        }
+      });
+      expect(ModelB.modelName).to.equal('ModelB');
+      var myModel = new ModelB(db, {
+        strA: 'abc',
+        strB: '123'
+      });
+      expect(myModel.strA).to.equal('abc');
+      expect(myModel.strB).to.equal('123');
     });
 
     describe('#constructor', function () {
@@ -303,6 +328,7 @@ describe('Model', function () {
           return FullTestModel.find(db, { _id: model._id });
         })
         .then(function (arr) {
+          arr = arr.toObject();
           expect(arr.length).to.equal(1);
           expect(arr[0]._id.toString()).to.equal(model._id.toString());
           done();
