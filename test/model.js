@@ -13,44 +13,60 @@ describe('Model', function () {
   describe('.extend()', function () {
 
     it('should return prototype with static methods defined', function () {
-      expect(FullTestModel).to.include.keys('extend', 'find', 'findOne', 'remove');
+      expect(FullTestModel).to.include.keys('find', 'findOne', 'remove');
     });
 
-    it('should allow subclassing of a model', function () {
+    it('should allow extending of a model', function () {
       var ModelA = Model.extend({
         name: 'ModelA',
-        abstract: true,
+        collection: 'modela',
         properties: {
           'strA': { type: 'string' }
         }
       });
-      var ModelB = ModelA.extend({
+      ModelA.foo = function () {
+        return 'foo';
+      };
+      ModelA.prototype.blah = function () {
+        return 'blah';
+      };
+      var myModelA = new ModelA(db, {
+        strA: 'xyz'
+      });
+      expect(ModelA.__name).to.equal('ModelA');
+      expect(ModelA.foo()).to.equal('foo');
+      expect(myModelA.strA).to.equal('xyz');
+      expect(myModelA.blah()).to.equal('blah');
+      var ModelB = Model.extend({
         name: 'ModelB',
         collection: 'modelb',
         properties: {
           'strB': { type: 'string' }
         }
-      });
-      expect(ModelB.modelName).to.equal('ModelB');
-      var myModel = new ModelB(db, {
+      }, ModelA);
+      ModelB.bar = function () {
+        return 'bar';
+      };
+      expect(ModelB.__name).to.equal('ModelB');
+      var myModelB = new ModelB(db, {
         strA: 'abc',
         strB: '123'
       });
-      expect(myModel.strA).to.equal('abc');
-      expect(myModel.strB).to.equal('123');
+      expect(myModelB).to.be.an.instanceof(ModelA);
+      expect(ModelB.bar()).to.equal('bar');
+      expect(myModelB.strB).to.equal('123');
+      expect(ModelB.foo()).to.equal('foo');
+      expect(myModelB.strA).to.equal('abc');
+      expect(myModelB.blah()).to.equal('blah');
     });
 
     describe('#constructor', function () {
 
-      var newModel;
-
-      before(function () {
-        newModel = new FullTestModel(db, {
+      it('should have run initialized', function () {
+        var newModel = new FullTestModel(db, {
           str: 'this is a string'
         });
-      });
-
-      it('should have run initialized', function () {
+        expect(newModel.str).to.equal('this is a string');
         expect(newModel.bool).to.be.true;
       });
 
