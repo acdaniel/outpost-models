@@ -19,7 +19,7 @@ describe('Model', function () {
     it('should allow extending of a model', function () {
       var ModelA = Model.extend({
         name: 'ModelA',
-        collection: 'modela',
+        abstract: true,
         properties: {
           'strA': { type: 'string' }
         }
@@ -30,13 +30,6 @@ describe('Model', function () {
       ModelA.prototype.blah = function () {
         return 'blah';
       };
-      var myModelA = new ModelA(db, {
-        strA: 'xyz'
-      });
-      expect(ModelA.__name).to.equal('ModelA');
-      expect(ModelA.foo()).to.equal('foo');
-      expect(myModelA.strA).to.equal('xyz');
-      expect(myModelA.blah()).to.equal('blah');
       var ModelB = Model.extend({
         name: 'ModelB',
         collection: 'modelb',
@@ -433,6 +426,47 @@ describe('Model', function () {
         })
         .done(null, done);
     });
+  });
+
+  describe('.extend', function () {
+
+    it('should allow extending of a model', function () {
+      var ModelA = Model.extend({
+        name: 'ModelA',
+        abstract: true,
+        properties: {
+          'strA': { type: 'string' }
+        }
+      });
+      ModelA.foo = function () {
+        return 'foo';
+      };
+      ModelA.prototype.blah = function () {
+        return 'blah';
+      };
+      var ModelB = ModelA.extend({
+        name: 'ModelB',
+        collection: 'modelb',
+        properties: {
+          'strB': { type: 'string' }
+        }
+      });
+      ModelB.bar = function () {
+        return 'bar';
+      };
+      expect(ModelB.__name).to.equal('ModelB');
+      var myModelB = new ModelB(db, {
+        strA: 'abc',
+        strB: '123'
+      });
+      expect(myModelB).to.be.an.instanceof(ModelA);
+      expect(ModelB.bar()).to.equal('bar');
+      expect(myModelB.strB).to.equal('123');
+      expect(ModelB.foo()).to.equal('foo');
+      expect(myModelB.strA).to.equal('abc');
+      expect(myModelB.blah()).to.equal('blah');
+    });
+
   });
 
 });
