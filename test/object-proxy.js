@@ -47,7 +47,7 @@ describe('ObjectProxy', function () {
     }
   });
 
-  describe('.create()', function () {
+  describe('.define()', function () {
 
     it('should return a constructor function', function () {
       expect(typeof MyObjectProxy).to.equal('function');

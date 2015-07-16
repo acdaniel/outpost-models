@@ -1,6 +1,6 @@
 var Model = require('../../lib/model');
 
-var FullTestModel = Model.extend({
+var FullTestModel = Model.create({
   name: 'FullTestModel',
   collection: 'mocha_test',
   properties: {
