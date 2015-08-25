@@ -16,12 +16,14 @@ describe('Model', function () {
       expect(FullTestModel).to.include.keys('find', 'findOne', 'remove');
     });
 
-    it.skip('should allow extending of a model', function () {
+    it('should allow extending of a model', function () {
       var ModelA = Model.create({
         name: 'ModelA',
         abstract: true,
+        collection: 'models',
         properties: {
-          'strA': { type: 'string' }
+          _type: { type: 'string', enum: ['A', 'B'], default: 'A'},
+          strA: { type: 'string' }
         }
       });
       ModelA.foo = function () {
@@ -32,21 +34,21 @@ describe('Model', function () {
       };
       var ModelB = Model.create({
         name: 'ModelB',
-        collection: 'modelb',
+        where: { _type: 'B' },
         properties: {
-          'strB': { type: 'string' }
+          _type: { type: 'string', default: 'B', valid: 'B' },
+          strB: { type: 'string' }
         }
       }, ModelA);
       ModelB.bar = function () {
         return 'bar';
       };
       expect(ModelB.__name).to.equal('ModelB');
-      console.trace(ModelB);
       var myModelB = new ModelB(db, {
         strA: 'abc',
         strB: '123'
       });
-      // expect(myModelB).to.be.an.instanceof(ModelA);
+      expect(myModelB).to.be.an.instanceof(ModelA);
       expect(ModelB.bar()).to.equal('bar');
       expect(myModelB.strB).to.equal('123');
       expect(ModelB.foo()).to.equal('foo');
